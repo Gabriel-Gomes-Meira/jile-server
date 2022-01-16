@@ -15,9 +15,10 @@ class SystemFiles {
                 var caminho = path.join(base, pastas[p]);
                 var stats = fs.lstatSync(caminho);
 
+                //Filtro especifico...
                 if(path.basename(caminho).startsWith('.') || path.basename(caminho).startsWith('$')){
                     continue
-                }
+                }                
 
                 if(stats.isDirectory()) {
                     mapeamento.push({
@@ -27,7 +28,11 @@ class SystemFiles {
                         children: []
                     });
                     ite ++;
-                } else {
+                } else {     
+                    if(path.extname(caminho) == '.blf'|| path.extname(caminho) == '.regtrans-ms' ||
+                    path.extname(caminho) == '.DAT' || path.extname(caminho) == ""){
+                        continue
+                    }                                   
                     mapeamento.push({
                         id: ite,
                         name: path.basename(caminho),
@@ -39,6 +44,22 @@ class SystemFiles {
 
             }catch(error){}
         }
+
+        mapeamento.sort((a,b)=>{
+            if(a.children && !b.children){
+                return -1;
+            } else if (!a.children && b.children){
+                return 1;
+            }else {
+                if (a.name > b.name) {
+                    return 1;
+                }else if (a.name < b.name) {
+                    return -1;
+                } else {
+                    return 0;
+                }              
+            }            
+        })
 
         return mapeamento
     }
