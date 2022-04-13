@@ -5,6 +5,7 @@ const SystemFiles = require("./SystemFiles")
 
 
 server = express();
+server.use(express.json())
 
 server.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*")
@@ -32,6 +33,11 @@ server.get("/files/", (req, res) =>{
     res.download(path)
 })
 
+server.post("/save/", (req,res) => {
+    new SystemFiles().saveFile(req.body.address+req.body.filename, req.body.content)
+    res.json("Successfuly saved file!")
+    
+})
 server.listen(3000)
 
 

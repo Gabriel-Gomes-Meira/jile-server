@@ -54,12 +54,12 @@ class SystemFiles {
                 if (a.name > b.name) {
                     return 1;
                 }else if (a.name < b.name) {
-                    return -1;
+                    return 1;
                 } else {
                     return 0;
                 }              
             }            
-        })
+        })        
 
         return mapeamento
     }
@@ -84,6 +84,12 @@ class SystemFiles {
             return response
         } catch (error) {}
     }
+
+    saveFile(path, content){
+        try {
+            fs.writeFileSync(path, content)    
+        } catch (error) {}        
+    }    
 
 }
 
